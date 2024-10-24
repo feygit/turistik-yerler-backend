@@ -10,7 +10,9 @@ const kullaniciRouter = require("./routes/kullanici.router");
 
 const app = express();
 app.use(express.json());
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs))
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs, {
+  customCssUrl: "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css",
+}));
 
 app.use("/auth", authRouter);
 app.use("/kullanici", kullaniciRouter);
