@@ -70,4 +70,4 @@ module.exports = {
   adSoyadKontorl,
   epostaKontrol,
   sifreKontrol,
-}
+};
