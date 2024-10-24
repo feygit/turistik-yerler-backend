@@ -1,14 +1,23 @@
 const express = require('express');
-require('dotenv').config();
+const swaggerUi = require("swagger-ui-express"); 
+const swaggerDocs = require("./docs/api.docs");
 
-const ApiHata = require('./models/ApiHata');
+require('dotenv').config();
+const ApiHata = require('./ApiHata');
+
+const authRouter = require("./routes/auth.router");
+const kullaniciRouter = require("./routes/kullanici.router");
 
 const app = express();
 app.use(express.json());
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs))
+
+app.use("/auth", authRouter);
+app.use("/kullanici", kullaniciRouter);
 
 app.get('/', (req, res) => {
   res.json({durum: 'Uygulama Çalışıyor!'});
-})
+});
 
 // tüm hataları yakalanan api yolu
 app.use((error, req, res, next) => {
@@ -25,7 +34,7 @@ app.use((error, req, res, next) => {
   }
 
   res.json(httpCevap);
-})
+});
 
 app.listen(3000, (error) => {
   if (error) {
