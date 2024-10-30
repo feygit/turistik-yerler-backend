@@ -1,3 +1,4 @@
+require("dotenv").config();
 const jwt = require('jsonwebtoken');
 const ApiHata = require('../ApiHata');
 const JWT_GIZLI_METIN = process.env.JWT_GIZLI_METIN;

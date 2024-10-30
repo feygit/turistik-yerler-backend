@@ -1,7 +1,6 @@
 const express = require('express');
 const swaggerUi = require("swagger-ui-express"); 
 const swaggerDocs = require("./docs/api.docs");
-
 require('dotenv').config();
 const ApiHata = require('./ApiHata');
 
