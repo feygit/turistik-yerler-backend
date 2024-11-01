@@ -4,12 +4,14 @@ const prisma = new PrismaClient()
 
 async function kullaniciOlustur(ad, soyad, eposta, sifre) {
   try {
+    const kullaniciSayisi = await prisma.kullanici.count();
     const kullanici = await prisma.kullanici.create({
       data: {
         ad,
         soyad,
         eposta,
         sifre,
+        yoneticiMi: kullaniciSayisi < 1,
       },
     });
     return kullanici;
