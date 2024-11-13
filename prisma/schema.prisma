@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_PRISMA_URL")
+}
+
+model Kullanici {
+  id               Int             @id @unique @default(autoincrement())
+  eposta           String          @unique @db.VarChar(319)
+  sifre            String          @db.VarChar(512)
+  ad               String          @db.VarChar(100)
+  soyad            String          @db.VarChar(100)
+  resim            String          @default("") @db.VarChar(1024)
+  epostaOnayliMi   Boolean         @default(false)
+  yoneticiMi       Boolean         @default(false)
+  degerlendirmeler Degerlendirme[]
+}
+
+model Yer {
+  id               Int             @id @unique @default(autoincrement())
+  ad               String          @db.VarChar(512)
+  adres_id         Int             @unique
+  adres            Adres           @relation(fields: [adres_id], references: [id])
+  sehir_id         Int
+  sehir            Sehir           @relation(fields: [sehir_id], references: [id])
+  aciklama         String
+  resim            String          @default("") @db.VarChar(1024)
+  tip              Int             @default(0) // 0: türistik yer, 1: hizmet veren yer
+  degerlendirmeler Degerlendirme[]
+  resimler         Resim[]
+}
+
+model Degerlendirme {
+  id           Int       @id @unique @default(autoincrement())
+  deger        Int
+  yorum        String    @default("")
+  kullanici_id Int
+  kullanici    Kullanici @relation(fields: [kullanici_id], references: [id])
+  yer_id       Int
+  yer          Yer       @relation(fields: [yer_id], references: [id])
+}
+
+model Ulke {
+  id       Int     @id @unique @default(autoincrement())
+  ad       String  @db.VarChar(128)
+  resim    String  @default("") @db.VarChar(1024)
+  adres_id Int     @unique
+  adres    Adres   @relation(fields: [adres_id], references: [id])
+  sehirler Sehir[]
+}
+
+model Sehir {
+  id       Int    @id @unique @default(autoincrement())
+  ad       String @db.VarChar(128)
+  resim    String @default("") @db.VarChar(1024)
+  ulke_id  Int
+  ulke     Ulke   @relation(fields: [ulke_id], references: [id])
+  adres_id Int    @unique
+  adres    Adres  @relation(fields: [adres_id], references: [id])
+  yerler   Yer[]
+}
+
+model Adres {
+  id     Int    @id @unique @default(autoincrement())
+  enlem  Float
+  boylam Float
+  zoom   Int
+  adres  String
+  sehir  Sehir?
+  ulke   Ulke?
+  yer    Yer?
+}
+
+model Resim {
+  id       Int    @id @unique @default(autoincrement())
+  aciklama String
+  url      String @db.VarChar(1024)
+  yer_id   Int
+  yer      Yer    @relation(fields: [yer_id], references: [id])
+}

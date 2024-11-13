@@ -1,0 +1,352 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+      "version": "1.0.0",
+      "title": "Turistik Yerler API",
+      "description": "Turistik Yerler Backend API Uygulaması için API Docs"
+  },
+  "servers": [{
+      "url": "https://turistik-yerler.vercel.app"
+  }],
+  "paths": {
+      "/auth/giris": {
+          "post": {
+              "summary": "giriş yapar",
+              "description": "bir kullanıcının giriş yapması için kullanılır",
+              "requestBody": {
+                  "required": true,
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "required": [
+                                  "eposta",
+                                  "sifre"
+                              ],
+                              "properties": {
+                                  "eposta": {
+                                      "type": "string",
+                                      "description": "boş olamaz, geçerli eposta adresi olmalı"
+                                  },
+                                  "sifre": {
+                                      "type": "string",
+                                      "description": "boş olamaz, en az 8 ve en çok 32 karakterden oluşmalı"
+                                  }
+                              }
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "tum istekler için gönderilir.",
+                      "content": {
+                          "application/json": {
+                              "examples": {
+                                  "hata olunca": {
+                                      "value": {
+                                          "hata": true,
+                                          "mesaji": "hata mesaji ..."
+                                      }
+                                  },
+                                  "sonuç": {
+                                      "value": {
+                                          "hata": false,
+                                          "data": {
+                                              "id": "id",
+                                              "ad": "ad",
+                                              "soyad": "soyad",
+                                              "eposta": "eposta",
+                                              "resim": "resim",
+                                              "jwtToken": "giriş jwt token",
+                                              "epostaOnayliMi": "epostaOnayliMi"
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+      },
+      "/kullanici/{id}": {
+          "get": {
+              "summary": "kullanıcıyı bilgileri getir",
+              "description": "bir kullanıcının bilgilerini getirmek için kullanılır.",
+              "parameters": [
+                  {
+                      "in": "path",
+                      "name": "id",
+                      "required": true,
+                      "description":"getirilecek kullanicinin id numarasi",
+                      "schema": {
+                          "type": "integer"
+                      }
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "tum istekler için gönderilir.",
+                      "content": {
+                          "application/json": {
+                              "examples": {
+                                  "hata olunca": {
+                                      "value": {
+                                          "hata": true,
+                                          "mesaji": "hata mesaji ..."
+                                      }
+                                  },
+                                  "sonuç": {
+                                      "value": {
+                                          "hata": false,
+                                          "data": {
+                                              "id": "id",
+                                              "ad": "ad",
+                                              "soyad": "soyad",
+                                              "resim": "resim"
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+      },
+      "/kullanici": {
+          "get": {
+              "summary": "kullanıcıyı bilgileri getir",
+              "description": "giriş yapmış kullanıcının bilgilerini getirmek için kullanılır.",
+              "parameters": [
+                  {
+                      "in": "header",
+                      "name": "Authorization",
+                      "required": true,
+                      "description":"value: Bearer < jwtToken >",
+                      "schema": {
+                          "type": "string"
+                      }
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "tum istekler için gönderilir.",
+                      "content": {
+                          "application/json": {
+                              "examples": {
+                                  "hata olunca": {
+                                      "value": {
+                                          "hata": true,
+                                          "mesaji": "hata mesaji ..."
+                                      }
+                                  },
+                                  "sonuç": {
+                                      "value": {
+                                          "hata": false,
+                                          "data": {
+                                              "id": "id",
+                                              "ad": "ad",
+                                              "soyad": "soyad",
+                                              "eposta": "eposta",
+                                              "resim": "resim",
+                                              "epostaOnayliMi": "epostaOnayliMi"
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          },
+          "post": {
+              "summary": "yeni kullanıcı oluşturur",
+              "description": "yeni kullanici/hesap oluşturmak için kullanılır.",
+              "requestBody": {
+                  "required": true,
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "required": [
+                                  "ad",
+                                  "soyad",
+                                  "eposta",
+                                  "sifre"
+                              ],
+                              "properties": {
+                                  "ad": {
+                                      "type": "string",
+                                      "description": "boş olamaz"
+                                  },
+                                  "soyad": {
+                                      "type": "string",
+                                      "description": "boş olamaz"
+                                  },
+                                  "eposta": {
+                                      "type": "string",
+                                      "description": "boş olamaz, geçerli eposta adresi olmalı"
+                                  },
+                                  "sifre": {
+                                      "type": "string",
+                                      "description": "boş olamaz, en az 8 ve en çok 32 karakterden oluşmalı"
+                                  }
+                              }
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "tum istekler için gönderilir.",
+                      "content": {
+                          "application/json": {
+                              "examples": {
+                                  "hata olunca": {
+                                      "value": {
+                                          "hata": true,
+                                          "mesaji": "hata mesaji ..."
+                                      }
+                                  },
+                                  "sonuç": {
+                                      "value": {
+                                          "hata": false,
+                                          "data": {
+                                              "id": "id",
+                                              "ad": "ad",
+                                              "soyad": "soyad",
+                                              "eposta": "eposta",
+                                              "resim": "resim",
+                                              "epostaOnayliMi": "epostaOnayliMi"
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          },
+          "patch": {
+              "summary": "kullanıcı gunceller",
+              "description": "giriş yapmış kullanıcının bilgilerini güncellemek için kullanılır.",
+              "parameters": [
+                  {
+                      "in": "header",
+                      "name": "Authorization",
+                      "required": true,
+                      "description":"value: Bearer < jwtToken >",
+                      "schema": {
+                          "type": "string"
+                      }
+                  }
+              ],
+              "requestBody": {
+                  "required": true,
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "properties": {
+                                  "ad": {
+                                      "type": "string",
+                                      "description": "boş olamaz"
+                                  },
+                                  "soyad": {
+                                      "type": "string",
+                                      "description": "boş olamaz"
+                                  },
+                                  "eposta": {
+                                      "type": "string",
+                                      "description": "boş olamaz, geçerli eposta adresi olmalı"
+                                  },
+                                  "sifre": {
+                                      "type": "string",
+                                      "description": "boş olamaz, en az 8 ve en çok 32 karakterden oluşmalı"
+                                  }
+                              }
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "tum istekler için gönderilir.",
+                      "content": {
+                          "application/json": {
+                              "examples": {
+                                  "hata olunca": {
+                                      "value": {
+                                          "hata": true,
+                                          "mesaji": "hata mesaji ..."
+                                      }
+                                  },
+                                  "sonuç": {
+                                      "value": {
+                                          "hata": false,
+                                          "data": {
+                                              "id": "id",
+                                              "ad": "ad",
+                                              "soyad": "soyad",
+                                              "eposta": "eposta",
+                                              "resim": "resim",
+                                              "epostaOnayliMi": "epostaOnayliMi"
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "summary": "kullanıcıyı siler",
+              "description": "giriş yapmış kullanıcının hesabını silmek için kullanılır.",
+              "parameters": [
+                  {
+                      "in": "header",
+                      "name": "Authorization",
+                      "required": true,
+                      "description":"value: Bearer < jwtToken >",
+                      "schema": {
+                          "type": "string"
+                      }
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "tum istekler için gönderilir.",
+                      "content": {
+                          "application/json": {
+                              "examples": {
+                                  "hata olunca": {
+                                      "value": {
+                                          "hata": true,
+                                          "mesaji": "hata mesaji ..."
+                                      }
+                                  },
+                                  "sonuç": {
+                                      "value": {
+                                          "hata": false,
+                                          "data": {
+                                              "id": "id",
+                                              "ad": "ad",
+                                              "soyad": "soyad",
+                                              "eposta": "eposta",
+                                              "resim": "resim",
+                                              "epostaOnayliMi": "epostaOnayliMi"
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+      }
+  }
+}

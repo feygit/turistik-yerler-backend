@@ -1,0 +1,75 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table Kullanici {
+  id int PK
+  ad varchar(100)
+  soyad varchar(100)
+  eposta varchar(319)
+  sifre varchar(512)
+  resim varchar(1024)
+  epostaOnayliMi bool
+}
+
+Table Yer {
+  id int PK
+  ad varchar(512)
+  adres_id int
+  sehir_id int
+  aciklama text
+  resim varchar(1024)
+  tip int
+}
+
+Table Degerlendirme {
+  id int PK
+  deger int
+  yorum text
+  kullanici_id int
+  yer_id int
+}
+
+Table Ulke {
+  id int PK
+  ad varchar(128)
+  resim varchar(1024)
+  adres_id int
+}
+
+Table Sehir {
+  id int PK
+  ad varchar(128)
+  resim varchar(1024)
+  ulke_id int
+  adres_id int
+}
+
+Table Adres {
+  id int PK
+  enlem double
+  boylam double
+  zoom int
+  adres text
+}
+
+Table Resim {
+  id int PK
+  aciklama text
+  url varchar(1024)
+  yer_id int
+}
+
+Ref: Yer.adres_id - Adres.id
+Ref: Yer.sehir_id > Sehir.id
+
+Ref: Degerlendirme.kullanici_id > Kullanici.id
+Ref: Degerlendirme.yer_id > Yer.id
+
+Ref: Ulke.adres_id - Adres.id
+
+Ref: Sehir.ulke_id > Ulke.id
+Ref: Sehir.adres_id - Adres.id
+
+Ref: Resim.yer_id > Yer.id
+
+
