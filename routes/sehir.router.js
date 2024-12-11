@@ -9,6 +9,7 @@ const axios = require('axios');
 const { ulkeOlustur, idIleUlkeGetir, tumUlkeleriGetir, ulkeGuncelle, ulkeSil } = require('../database/ulke.db');
 const uploadResim = require('../util/upload');
 const { tumSehirleriGetir, idIleSehirGetir, ulkeSehirleriGetir, sehirOlustur, sehirGuncelle, sehirSil } = require('../database/sehir.db');
+const { ilSicakligiGetir } = require('../util/weatherapi');
 
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
@@ -56,6 +57,10 @@ router.get('/:id', async (req, res, next) => {
     const sehir = await idIleSehirGetir(sehirId);
     if (!sehir) throw new ApiHata("sehir bulunamadi");
     
+    // weathe:
+    const hava = await ilSicakligiGetir(sehir.ad);
+    sehir.hava = hava;
+
     // yanit ver
     res.json({
       hata: false,
