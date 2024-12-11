@@ -347,6 +347,69 @@
                   }
               }
           }
-      }
+      },
+      "/kullanici/resim": {
+            "patch": {
+              "summary": "kullanıcının resmini gunceller",
+              "description": "giriş yapmış kullanıcının resmini güncellemek için kullanılır.",
+              "parameters": [
+                  {
+                      "in": "header",
+                      "name": "Authorization",
+                      "required": true,
+                      "description":"value: Bearer < jwtToken >",
+                      "schema": {
+                          "type": "string"
+                      }
+                  }
+              ],
+              "requestBody": {
+                  "required": true,
+                  "content": {
+                      "mutipart/form-data": {
+                          "schema": {
+                              "type": "object",
+                              "properties": {
+                                  "resim": {
+                                      "type": "file",
+                                      "description": "boş olamaz"
+                                  }
+                              }
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "tum istekler için gönderilir.",
+                      "content": {
+                          "application/json": {
+                              "examples": {
+                                  "hata olunca": {
+                                      "value": {
+                                          "hata": true,
+                                          "mesaji": "hata mesaji ..."
+                                      }
+                                  },
+                                  "sonuç": {
+                                      "value": {
+                                          "hata": false,
+                                          "data": {
+                                              "id": "id",
+                                              "ad": "ad",
+                                              "soyad": "soyad",
+                                              "eposta": "eposta",
+                                              "resim": "resim",
+                                              "epostaOnayliMi": "epostaOnayliMi"
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+        }
   }
 }

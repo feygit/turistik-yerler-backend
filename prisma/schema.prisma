@@ -22,8 +22,6 @@ model Kullanici {
 model Yer {
   id               Int             @id @unique @default(autoincrement())
   ad               String          @db.VarChar(512)
-  adres_id         Int             @unique
-  adres            Adres           @relation(fields: [adres_id], references: [id])
   sehir_id         Int
   sehir            Sehir           @relation(fields: [sehir_id], references: [id])
   aciklama         String
@@ -47,8 +45,6 @@ model Ulke {
   id       Int     @id @unique @default(autoincrement())
   ad       String  @db.VarChar(128)
   resim    String  @default("") @db.VarChar(1024)
-  adres_id Int     @unique
-  adres    Adres   @relation(fields: [adres_id], references: [id])
   sehirler Sehir[]
 }
 
@@ -58,8 +54,6 @@ model Sehir {
   resim    String @default("") @db.VarChar(1024)
   ulke_id  Int
   ulke     Ulke   @relation(fields: [ulke_id], references: [id])
-  adres_id Int    @unique
-  adres    Adres  @relation(fields: [adres_id], references: [id])
   yerler   Yer[]
 }
 
@@ -69,9 +63,6 @@ model Adres {
   boylam Float
   zoom   Int
   adres  String
-  sehir  Sehir?
-  ulke   Ulke?
-  yer    Yer?
 }
 
 model Resim {

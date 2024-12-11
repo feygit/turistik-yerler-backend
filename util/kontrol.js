@@ -66,8 +66,15 @@ function sifreKontrol(sifre) {
   };
 }
 
+function resimKontrol(resim) {
+  if (!resim) {
+    throw new ApiHata("resim boş olamaz.");
+  }
+}
+
 module.exports = {
   adSoyadKontorl,
   epostaKontrol,
   sifreKontrol,
+  resimKontrol,
 };

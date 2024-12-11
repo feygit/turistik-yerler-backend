@@ -1,11 +1,15 @@
 const express = require('express');
 const ApiHata = require('../ApiHata');
-const { adSoyadKontorl, epostaKontrol, sifreKontrol } = require('../util/kontrol');
+const { adSoyadKontorl, epostaKontrol, sifreKontrol, resimKontrol } = require('../util/kontrol');
 const { adSoyadTemizle, epostaTemizle, sifreTemizle } = require('../util/temizle');
 const { kullaniciOlustur, kullaniciSil, idIleKullaniciGetir, kullaniciGuncelle } = require('../database/kullanici.db');
 const { sifreyiHashla } = require('../util/sifreHashlama');
 const girisYapmaKontrolu = require('../middlewares/girisYapma.middleware');
+const multer  = require('multer');
+const uploadResim = require('../util/upload');
 
+const storage = multer.memoryStorage()
+const upload = multer({ storage: storage })
 const router = express.Router();
 
 router.get('/', girisYapmaKontrolu, async (req, res, next) => {
@@ -177,6 +181,40 @@ router.delete('/', girisYapmaKontrolu, async (req, res, next) => {
       hata: false,
       data: kullanici,
     });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+
+
+
+// const imgbbUploadUrl = "https://webhook.site/ea878643-705a-4293-95a4-0d6db140aeaf";
+
+router.patch("/resim", girisYapmaKontrolu, upload.single('resim'), async (req, res, next) => {
+  try {
+    const dogrulanmisKullanici = req.kullanici;
+
+    const resim = req.file;
+    resimKontrol(resim);
+
+    const resimUrl = await uploadResim(resim);
+
+    const guncelBilgiler = {
+      resim: resimUrl,
+    }
+
+    const kullanici = await kullaniciGuncelle(dogrulanmisKullanici.id, guncelBilgiler);
+
+    kullanici.sifre = undefined;
+
+    res.json({
+      hata: false,
+      data: kullanici,
+    });
+
+    res.redirect("http://127.0.0.1:5500/ZTEST.html");
   } catch (error) {
     console.log(error);
     next(error);

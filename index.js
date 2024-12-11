@@ -8,6 +8,8 @@ const ApiHata = require('./ApiHata');
 const authRouter = require("./routes/auth.router");
 const kullaniciRouter = require("./routes/kullanici.router");
 const yerRouter = require("./routes/yer.router");
+const ulkeRouter = require("./routes/ulke.router");
+const sehirRouter = require("./routes/sehir.router");
 
 const app = express();
 app.use(cors());
@@ -20,6 +22,8 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs, {
 app.use("/auth", authRouter);
 app.use("/kullanici", kullaniciRouter);
 app.use("/yer", yerRouter);
+app.use("/ulke", ulkeRouter);
+app.use("/sehir", sehirRouter);
 
 app.get('/', (req, res) => {
   res.json({durum: 'Uygulama Çalışıyor!'});
